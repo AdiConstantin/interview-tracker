@@ -1,0 +1,40 @@
+﻿@page
+@model InterviewTracker.Pages.Interviews.IndexModel
+@{
+    ViewData["Title"] = "Interviews";
+}
+<link rel="stylesheet" href="~/css/site.css" />
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Interviews</h2>
+    <a href="/Interviews/Create" class="btn btn-success">+ New Interview</a>
+</div>
+<table class="table table-striped table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Application</th>
+            <th>Type</th>
+            <th>Stage</th>
+            <th>Date</th>
+            <th>Outcome</th>
+            <th>Duration (min)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var interview in Model.Items)
+        {
+            var isInactive = interview.Application?.Company?.IsInactive ?? false;
+            <tr class="@(isInactive ? "inactive-company" : "")">
+                <td>@interview.Application?.Company.Name — @interview.Application?.Role</td>
+                <td>@interview.Type</td>
+                <td>@interview.Stage</td>
+                <td>@(interview.Date?.ToString("g") ?? "-")</td>
+                <td>@(string.IsNullOrEmpty(interview.Outcome) ? "-" : interview.Outcome)</td>
+                <td>@(interview.DurationMin?.ToString() ?? "-")</td>
+                <td>
+                    <a href="/Interviews/Edit/@interview.Id" class="btn btn-sm btn-primary me-1">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,55 @@
+@page "{id:guid}"
+@model InterviewTracker.Pages.Interviews.EditModel
+@{
+    ViewData["Title"] = "Edit Interview";
+}
+
+<h2>Edit Interview</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+        @foreach (var entry in ViewData.ModelState)
+        {
+            foreach (var error in entry.Value.Errors)
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        }
+        </ul>
+    </div>
+}
+
+<form method="post" class="row g-3">
+    <input type="hidden" asp-for="Interview.Id" />
+    <input type="hidden" asp-for="Interview.ApplicationId" />
+    <div class="col-md-6">
+        <label class="form-label">Type</label>
+        <select asp-for="Interview.Type" asp-items="Model.TypeOptions" class="form-select"></select>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Stage</label>
+        <select asp-for="Interview.Stage" asp-items="Model.StageOptions" class="form-select"></select>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Date</label>
+        <input asp-for="Interview.Date" type="datetime-local" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Duration (min)</label>
+        <input asp-for="Interview.DurationMin" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Outcome</label>
+        <input asp-for="Interview.Outcome" class="form-control" />
+    </div>
+    <div class="col-12">
+        <label class="form-label">Notes</label>
+        <textarea asp-for="Interview.Notes" class="form-control"></textarea>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/Interviews" class="btn btn-link">Cancel</a>
+    </div>
+</form>

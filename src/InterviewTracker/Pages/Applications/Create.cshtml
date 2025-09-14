@@ -1,0 +1,45 @@
+﻿@page
+@model InterviewTracker.Pages.Applications.CreateModel
+@{
+    ViewData["Title"] = "New Application";
+}
+<h2>New Application</h2>
+<form method="post" class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label">Company Name</label>
+        <input asp-for="CompanyName" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Company Location</label>
+        <input asp-for="CompanyLocation" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Role</label>
+        <input asp-for="Role" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Seniority</label>
+        <input asp-for="Seniority" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Source</label>
+        <input asp-for="Source" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Salary Expectation</label>
+        <input asp-for="SalaryExpectation" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Inactive Company</label>
+        <div class="form-check form-switch">
+            <input asp-for="IsInactive" class="form-check-input" type="checkbox" role="switch" id="isInactiveSwitch" />
+            <label class="form-check-label" for="isInactiveSwitch" title="Process is closed for future interviews, company is not in focus">
+                Mark company as inactive
+            </label>
+        </div>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/Applications" class="btn btn-link">Cancel</a>
+    </div>
+</form>
