@@ -8,6 +8,12 @@
     <h2>Applications</h2>
     <a href="/Applications/Create" class="btn btn-success">+ New Application</a>
 </div>
+<form method="get" class="mb-3">
+    <label>
+        <input type="checkbox" name="obfuscate" value="true" @(Model.Obfuscate ? "checked" : "") onchange="this.form.submit()" />
+        Obfuscate sensitive data
+    </label>
+</form>
 <table class="table table-striped table-hover">
     <thead class="table-light">
         <tr>
@@ -24,10 +30,16 @@
         {
             var isInactive = app.Company?.IsInactive ?? false;
             <tr class="@(isInactive ? "inactive-company" : "")">
-                <td>@app.Company?.Name</td>
-                <td>@app.Role (@app.Seniority)</td>
+                <td>
+                    @(Model.Obfuscate ? "Company #" + app.Id : app.Company?.Name)
+                </td>
+                <td>
+                    @(Model.Obfuscate ? "Role #" + app.Id : $"{app.Role} ({app.Seniority})")
+                </td>
                 <td>@app.Status</td>
-                <td>@(app.SalaryExpectation)</td>
+                <td>
+                    @(Model.Obfuscate ? "****" : app.SalaryExpectation)
+                </td>
                 @* <td>@app.CreatedAt.ToString("g")</td> *@
                 <td>
                     <a href="/Applications/Edit/@app.Id" class="btn btn-sm btn-primary me-1">Edit</a>
