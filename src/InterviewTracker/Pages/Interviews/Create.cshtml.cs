@@ -18,7 +18,7 @@ public class CreateModel(AppDbContext db) : PageModel
     [BindProperty] public string? Notes { get; set; }
 
     public List<(Guid Id, string Label)> Apps { get; set; } = [];
-    public IEnumerable<SelectListItem> ApplicationOptions { get; set; } // Add this property to fix CS1061
+    public IEnumerable<SelectListItem> ApplicationOptions { get; set; }
     public IEnumerable<SelectListItem> TypeOptions { get; set; } = [];
     public IEnumerable<SelectListItem> StageOptions { get; set; } = [];
 
@@ -32,7 +32,6 @@ public class CreateModel(AppDbContext db) : PageModel
             Text = a.Label
         }).ToList();
 
-        // Populează TypeOptions și StageOptions din enum
         TypeOptions = Enum.GetValues(typeof(InterviewType))
             .Cast<InterviewType>()
             .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString() })

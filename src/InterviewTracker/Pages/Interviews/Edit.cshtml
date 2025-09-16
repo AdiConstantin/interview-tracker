@@ -23,7 +23,10 @@
 
 <form method="post" class="row g-3">
     <input type="hidden" asp-for="Interview.Id" />
-    <input type="hidden" asp-for="Interview.ApplicationId" />
+    <div class="mb-3">
+        <label asp-for="Interview.ApplicationId" class="form-label">Application</label>
+        <select asp-for="Interview.ApplicationId" class="form-select" asp-items="Model.ApplicationOptions"></select>
+    </div>
     <div class="col-md-6">
         <label class="form-label">Type</label>
         <select asp-for="Interview.Type" asp-items="Model.TypeOptions" class="form-select"></select>

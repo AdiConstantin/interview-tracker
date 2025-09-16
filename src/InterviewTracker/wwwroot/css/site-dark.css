@@ -22,3 +22,8 @@ body {
     background-color: #1b5e20;
     border-color: #1b5e20;
 }
+.dark-footer {
+    background-color: #222;
+    color: #f8f9fa;
+    border-color: #444;
+}

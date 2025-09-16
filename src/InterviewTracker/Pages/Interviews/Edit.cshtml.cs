@@ -12,6 +12,7 @@ public class EditModel(AppDbContext db) : PageModel
     [BindProperty] public Interview Interview { get; set; } = default!;
     public IEnumerable<SelectListItem> TypeOptions { get; set; } = [];
     public IEnumerable<SelectListItem> StageOptions { get; set; } = [];
+    public IEnumerable<SelectListItem> ApplicationOptions { get; set; } = [];
 
     public async Task<IActionResult> OnGet(Guid id)
     {
@@ -31,6 +32,19 @@ public class EditModel(AppDbContext db) : PageModel
             .Cast<InterviewStage>()
             .Select(e => new SelectListItem { Value = e.ToString(), Text = e.ToString() })
             .ToList();
+
+        ApplicationOptions = await db.Applications
+            .Include(a => a.Company)
+            .Where(a => !a.IsDeleted)
+            .OrderBy(a => a.Company.Name)
+            .ThenBy(a => a.Role)
+            .Select(a => new SelectListItem
+            {
+                Value = a.Id.ToString(),
+                Text = $"{a.Company.Name} — {a.Role}",
+                Selected = a.Id == Interview.ApplicationId
+            })
+            .ToListAsync();
 
         return Page();
     }
