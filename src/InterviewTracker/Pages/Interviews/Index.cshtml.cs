@@ -16,6 +16,8 @@ public class IndexModel(AppDbContext db) : PageModel
     public record AppOption(Guid Id, string Label);
     public List<AppOption> AppOptions { get; set; } = [];
 
+    public Dictionary<string, List<Interview>> GroupedByCompany { get; set; } = [];
+
     public async Task OnGet(bool? obfuscate, bool? showDeleted)
     {
         Obfuscate = obfuscate ?? false;
@@ -40,6 +42,11 @@ public class IndexModel(AppDbContext db) : PageModel
             .ThenBy(a => a.Role)
             .Select(a => new AppOption(a.Id, a.Company.Name + " — " + a.Role))
             .ToListAsync();
+
+        GroupedByCompany = Items
+            .Where(i => i.Application?.Company != null)
+            .GroupBy(i => i.Application!.Company.Name)
+            .ToDictionary(g => g.Key, g => g.ToList());
     }
 
     public async Task<IActionResult> OnPostDelete(Guid id, bool showDeleted)

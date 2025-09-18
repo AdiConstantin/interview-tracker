@@ -21,63 +21,67 @@
     </label>
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Company</th>
-            <th>Role</th>
-            <th>Date</th>
-            <th>Stage</th>
-            <th>Type</th>
-            <th>Outcome</th>
-            <th>Duration (min)</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var i in Model.Items)
-        {
-            var isInactive = i.Application?.Company?.IsInactive ?? false;
-            var company = i.Application?.Company?.Name ?? "-";
-            var role = i.Application?.Role ?? "-";
-            <tr class="interview-row @(isInactive ? "inactive-company" : "")"
-                data-interview-id="@i.Id"
-                data-current-app-id="@i.ApplicationId"
-                oncontextmenu="openSwitchMenu(event, this)">
-                <td>
-                    @(Model.Obfuscate ? "Company #" + i.Application?.Company.Id : company)
-                </td>
-                <td>@role</td>
-                <td>@(i.Date?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
-                <td>@i.Stage</td>
-                <td>@i.Type</td>
-                <td>
-                    @(Model.Obfuscate ? "****" : (string.IsNullOrEmpty(i.Outcome) ? "-" : i.Outcome))
-                </td>
-                <td>@(i.DurationMin?.ToString() ?? "-")</td>
-                <td>
-                    <a href="/Interviews/Edit/@i.Id" class="btn btn-sm btn-primary me-1">Edit</a>
-                    @if (!i.IsDeleted)
-                    {
-                        <form method="post" asp-page-handler="Delete" class="inline">
-                            <input type="hidden" name="id" value="@i.Id" />
-                            <input type="hidden" name="showDeleted" value="@Model.ShowDeleted" />
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form method="post" asp-page-handler="Restore" class="inline">
-                            <input type="hidden" name="id" value="@i.Id" />
-                            <input type="hidden" name="showDeleted" value="@Model.ShowDeleted" />
-                            <button type="submit" class="btn btn-sm btn-secondary">Restore</button>
-                        </form>
-                    }
-                </td>
+@foreach (var group in Model.GroupedByCompany)
+{
+    <h3>@group.Key</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Date</th>
+                <th>Stage</th>
+                <th>Type</th>
+                <th>Outcome</th>
+                <th>Duration (min)</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var i in group.Value)
+            {
+                var isInactive = i.Application?.Company?.IsInactive ?? false;
+                var company = i.Application?.Company?.Name ?? "-";
+                var role = i.Application?.Role ?? "-";
+                <tr class="interview-row @(isInactive ? "inactive-company" : "")"
+                    data-interview-id="@i.Id"
+                    data-current-app-id="@i.ApplicationId"
+                    oncontextmenu="openSwitchMenu(event, this)">
+                    <td>
+                        @(Model.Obfuscate ? "Company #" + i.Application?.Company.Id : company)
+                    </td>
+                    <td>@role</td>
+                    <td>@(i.Date?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+                    <td>@i.Stage</td>
+                    <td>@i.Type</td>
+                    <td>
+                        @(Model.Obfuscate ? "****" : (string.IsNullOrEmpty(i.Outcome) ? "-" : i.Outcome))
+                    </td>
+                    <td>@(i.DurationMin?.ToString() ?? "-")</td>
+                    <td>
+                        <a href="/Interviews/Edit/@i.Id" class="btn btn-sm btn-primary me-1">Edit</a>
+                        @if (!i.IsDeleted)
+                        {
+                            <form method="post" asp-page-handler="Delete" class="inline">
+                                <input type="hidden" name="id" value="@i.Id" />
+                                <input type="hidden" name="showDeleted" value="@Model.ShowDeleted" />
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-page-handler="Restore" class="inline">
+                                <input type="hidden" name="id" value="@i.Id" />
+                                <input type="hidden" name="showDeleted" value="@Model.ShowDeleted" />
+                                <button type="submit" class="btn btn-sm btn-secondary">Restore</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <form id="switchForm" method="post" asp-page-handler="SwitchApp" class="hidden">
     <input type="hidden" name="interviewId" id="switchInterviewId" />

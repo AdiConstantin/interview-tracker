@@ -6,3 +6,8 @@ obj/
 appsettings.Local.json
 .vscode/
 .vs/*
+publish/*
+src/InterviewTracker/InterviewTracker.csproj.user
+src/InterviewTracker/Properties/PublishProfiles/FolderProfile.pubxml
+src/InterviewTracker/Properties/PublishProfiles/FolderProfile.pubxml.user
+src/InterviewTracker/InterviewTracker.csproj.user
